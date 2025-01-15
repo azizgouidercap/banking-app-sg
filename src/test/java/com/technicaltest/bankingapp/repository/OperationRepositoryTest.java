@@ -1,6 +1,5 @@
 package com.technicaltest.bankingapp.repository;
 
-import com.technicaltest.bankingapp.model.Account;
 import com.technicaltest.bankingapp.model.Operation;
 import org.junit.jupiter.api.Test;
 
@@ -8,12 +7,10 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Optional;
 
-import static com.technicaltest.bankingapp.builder.AccountFactoryBuilder.buildAccount;
-import static com.technicaltest.bankingapp.builder.OperationFactoryBuilder.buildOperation;
-import static org.assertj.core.api.Assertions.as;
+import static com.technicaltest.bankingapp.builder.OperationBuilderFactory.buildOperation;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class OperationRepositoryTest {
+class OperationRepositoryTest {
 
     private final OperationRepository operationRepository = new OperationRepository();
 

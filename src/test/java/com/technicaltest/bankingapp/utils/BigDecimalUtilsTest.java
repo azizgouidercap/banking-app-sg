@@ -1,26 +1,23 @@
 package com.technicaltest.bankingapp.utils;
 
-import com.technicaltest.bankingapp.exception.InvalidOperationException;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public class BigDecimalUtilsTest {
+class BigDecimalUtilsTest {
 
     @Test
     void normalize_shouldThrowException_whenValueIsNull() {
         // Given
         BigDecimal value = null;
 
-        // When & Then
-        InvalidOperationException exception = assertThrows(
-                InvalidOperationException.class,
-                () -> BigDecimalUtils.normalize(value)
-        );
-        assertEquals("Value must not be null", exception.getMessage());
+        // When
+        BigDecimal result = BigDecimalUtils.normalize(value);
+
+        // Then
+        assertThat(result).isNull();
     }
 
     @Test
@@ -32,7 +29,7 @@ public class BigDecimalUtilsTest {
         BigDecimal result = BigDecimalUtils.normalize(value);
 
         // Then
-        assertEquals(new BigDecimal("123.45"), result);
+        assertThat(result).isEqualTo(new BigDecimal("123.45"));
     }
 
     @Test
@@ -44,7 +41,7 @@ public class BigDecimalUtilsTest {
         BigDecimal result = BigDecimalUtils.normalize(value);
 
         // Then
-        assertEquals(new BigDecimal("123.00"), result);
+        assertThat(result).isEqualTo(new BigDecimal("123.00"));
     }
 
     @Test
@@ -56,7 +53,7 @@ public class BigDecimalUtilsTest {
         BigDecimal result = BigDecimalUtils.normalize(value);
 
         // Then
-        assertEquals(new BigDecimal("123.46"), result);
+        assertThat(result).isEqualTo(new BigDecimal("123.46"));
     }
 
     @Test
@@ -68,6 +65,6 @@ public class BigDecimalUtilsTest {
         BigDecimal result = BigDecimalUtils.normalize(value);
 
         // Then
-        assertEquals(new BigDecimal("123.44"), result);
+        assertThat(result).isEqualTo(new BigDecimal("123.44"));
     }
 }

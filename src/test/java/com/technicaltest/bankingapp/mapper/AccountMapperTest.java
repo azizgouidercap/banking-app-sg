@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 
-import static com.technicaltest.bankingapp.builder.AccountFactoryBuilder.buildAccount;
+import static com.technicaltest.bankingapp.builder.AccountBuilderFactory.buildAccount;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class AccountMapperTest {

@@ -13,8 +13,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-import static com.technicaltest.bankingapp.builder.OperationFactoryBuilder.DEFAULT_ID;
-import static com.technicaltest.bankingapp.builder.OperationFactoryBuilder.buildOperation;
+import static com.technicaltest.bankingapp.builder.OperationBuilderFactory.DEFAULT_ID;
+import static com.technicaltest.bankingapp.builder.OperationBuilderFactory.buildOperation;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;

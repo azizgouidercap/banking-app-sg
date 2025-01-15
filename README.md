@@ -30,7 +30,7 @@ mvn clean package
 
 #### If Using a Fat JAR:
 ```bash
-java -jar target/bankingapp-1.0-SNAPSHOT.jar
+java -jar target/banking-app-sg-1.0-SNAPSHOT.jar
 ```
 
 ---

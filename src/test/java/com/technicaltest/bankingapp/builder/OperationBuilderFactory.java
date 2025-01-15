@@ -1,7 +1,6 @@
 package com.technicaltest.bankingapp.builder;
 
 import com.technicaltest.bankingapp.enumeration.OperationType;
-import com.technicaltest.bankingapp.model.Account;
 import com.technicaltest.bankingapp.model.Operation;
 import lombok.experimental.UtilityClass;
 
@@ -9,7 +8,7 @@ import java.math.BigDecimal;
 import java.time.Instant;
 
 @UtilityClass
-public class OperationFactoryBuilder {
+public class OperationBuilderFactory {
 
     public static final Long DEFAULT_ID = 1L;
 

@@ -7,19 +7,20 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Optional;
 
-import static com.technicaltest.bankingapp.builder.AccountFactoryBuilder.buildAccount;
+import static com.technicaltest.bankingapp.builder.AccountBuilderFactory.buildAccount;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class AccountRepositoryTest {
+class AccountRepositoryTest {
 
     private final AccountRepository accountRepository = new AccountRepository();
 
     @Test
     void save_shouldSaveNewAccount() {
         // Given
-        Account account = buildAccount(BigDecimal.TEN).toBuilder()
-                .id(null).createdAt(null).updatedAt(null)
-                .build();
+        Account account = buildAccount(BigDecimal.TEN);
+        account.setUpdatedAt(null);
+        account.setId(null);
+        account.setCreatedAt(null);
 
         // When
         Account savedAccount = accountRepository.save(account);

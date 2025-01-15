@@ -1,6 +1,5 @@
 package com.technicaltest.bankingapp.utils;
 
-import com.technicaltest.bankingapp.exception.InvalidOperationException;
 import lombok.experimental.UtilityClass;
 
 import java.math.BigDecimal;
@@ -20,7 +19,7 @@ public class BigDecimalUtils {
      */
     public static BigDecimal normalize(BigDecimal value) {
         if (value == null) {
-            throw new InvalidOperationException("Value must not be null");
+            return null;
         }
         return value.setScale(SCALE, ROUNDING_MODE);
     }

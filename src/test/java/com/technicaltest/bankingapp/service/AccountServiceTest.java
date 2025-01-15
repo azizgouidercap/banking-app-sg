@@ -14,7 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
 
-import static com.technicaltest.bankingapp.builder.AccountFactoryBuilder.*;
+import static com.technicaltest.bankingapp.builder.AccountBuilderFactory.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 

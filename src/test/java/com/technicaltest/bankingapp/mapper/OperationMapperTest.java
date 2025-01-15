@@ -9,7 +9,7 @@ import org.junit.jupiter.params.provider.NullAndEmptySource;
 import java.math.BigDecimal;
 import java.util.List;
 
-import static com.technicaltest.bankingapp.builder.OperationFactoryBuilder.buildOperation;
+import static com.technicaltest.bankingapp.builder.OperationBuilderFactory.buildOperation;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class OperationMapperTest {

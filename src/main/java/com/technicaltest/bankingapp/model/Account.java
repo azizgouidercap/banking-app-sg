@@ -12,5 +12,4 @@ import java.math.BigDecimal;
 public class Account extends Entity {
     private String ownerName;
     private BigDecimal balance;
-
 }

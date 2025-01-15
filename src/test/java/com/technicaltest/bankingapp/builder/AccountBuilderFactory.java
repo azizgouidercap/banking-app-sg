@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 import java.time.Instant;
 
 @UtilityClass
-public class AccountFactoryBuilder {
+public class AccountBuilderFactory {
 
     public static final String OWNER_NAME = "John Doe";
     public static final Long DEFAULT_ID = 1L;

@@ -5,9 +5,10 @@ import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ValidationUtilsTest {
+class ValidationUtilsTest {
 
     @Test
     void requireNonNull_shouldNotThrow_whenValueIsNotNull() {
@@ -28,7 +29,7 @@ public class ValidationUtilsTest {
                 InvalidOperationException.class,
                 () -> ValidationUtils.requireNonNull(value, "TestField")
         );
-        assertEquals("TestField must not be null.", exception.getMessage());
+        assertThat(exception.getMessage()).isEqualTo("TestField must not be null.");
     }
 
     @Test
@@ -50,7 +51,7 @@ public class ValidationUtilsTest {
                 InvalidOperationException.class,
                 () -> ValidationUtils.requirePositiveNumber(value, "Amount")
         );
-        assertEquals("Amount must be greater than zero.", exception.getMessage());
+        assertThat(exception.getMessage()).isEqualTo("Amount must be greater than zero.");
     }
 
     @Test
@@ -63,7 +64,7 @@ public class ValidationUtilsTest {
                 InvalidOperationException.class,
                 () -> ValidationUtils.requirePositiveNumber(value, "Amount")
         );
-        assertEquals("Amount must be greater than zero.", exception.getMessage());
+        assertThat(exception.getMessage()).isEqualTo("Amount must be greater than zero.");
     }
 
     @Test
@@ -85,7 +86,7 @@ public class ValidationUtilsTest {
                 InvalidOperationException.class,
                 () -> ValidationUtils.requirePositiveNumber(value, "TestField")
         );
-        assertEquals("TestField must be greater than zero.", exception.getMessage());
+        assertThat(exception.getMessage()).isEqualTo("TestField must be greater than zero.");
     }
 
     @Test
@@ -98,7 +99,7 @@ public class ValidationUtilsTest {
                 InvalidOperationException.class,
                 () -> ValidationUtils.requirePositiveNumber(value, "TestField")
         );
-        assertEquals("TestField must be greater than zero.", exception.getMessage());
+        assertThat(exception.getMessage()).isEqualTo("TestField must be greater than zero.");
     }
 
     @Test
@@ -120,7 +121,7 @@ public class ValidationUtilsTest {
                 InvalidOperationException.class,
                 () -> ValidationUtils.requirePositiveNumber(value, "TestField")
         );
-        assertEquals("TestField must be greater than zero.", exception.getMessage());
+        assertThat(exception.getMessage()).isEqualTo("TestField must be greater than zero.");
     }
 
     @Test
@@ -133,6 +134,6 @@ public class ValidationUtilsTest {
                 InvalidOperationException.class,
                 () -> ValidationUtils.requirePositiveNumber(value, "TestField")
         );
-        assertEquals("TestField must be greater than zero.", exception.getMessage());
+        assertThat(exception.getMessage()).isEqualTo("TestField must be greater than zero.");
     }
 }

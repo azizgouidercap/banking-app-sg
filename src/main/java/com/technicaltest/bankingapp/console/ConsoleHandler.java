@@ -5,6 +5,7 @@ import com.technicaltest.bankingapp.dto.OperationDTO;
 import com.technicaltest.bankingapp.exception.BusinessException;
 import com.technicaltest.bankingapp.service.AccountService;
 import com.technicaltest.bankingapp.service.OperationService;
+import lombok.extern.slf4j.Slf4j;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.Scanner;
 import static com.technicaltest.bankingapp.utils.ValidationUtils.requireNonNull;
 import static com.technicaltest.bankingapp.utils.ValidationUtils.requirePositiveNumber;
 
-
+@Slf4j
 public class ConsoleHandler {
 
     private final AccountService accountService = new AccountService();
@@ -36,8 +37,10 @@ public class ConsoleHandler {
                 running = handleUserChoice(choice);
 
             } catch (BusinessException e) {
+                log.warn(e.getMessage());
                 System.err.println("Error: " + e.getMessage());
             } catch (Exception e) {
+                log.error(e.getMessage());
                 System.err.println("An unexpected error occurred: " + e.getMessage());
             }
         }
