@@ -7,11 +7,12 @@ import java.lang.reflect.ParameterizedType;
 import java.time.Instant;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicLong;
 
 public abstract class AbstractRepository<T extends Entity> {
 
     protected final Map<Long, T> collection;
-    private long nextId = 1;
+    private final AtomicLong idCounter;
 
     @SuppressWarnings("unchecked")
     public AbstractRepository() {
@@ -19,11 +20,12 @@ public abstract class AbstractRepository<T extends Entity> {
         Class<T> entityType = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass())
                 .getActualTypeArguments()[0];
         this.collection = InMemoryDatabase.getCollection(entityType);
+        this.idCounter = InMemoryDatabase.getIdCounter(entityType);
     }
 
     public T save(T entity) {
         if (entity.getId() == null) {
-            entity.setId(nextId++);
+            entity.setId(idCounter.incrementAndGet());
             entity.setCreatedAt(Instant.now());
         }
         entity.setUpdatedAt(Instant.now());

@@ -32,9 +32,6 @@ class AccountServiceTest {
     private AccountRepository accountRepository;
 
     @Mock
-    private TransactionProcessingService transactionProcessingService;
-
-    @Mock
     private AuditService auditService;
 
     @InjectMocks
@@ -62,63 +59,51 @@ class AccountServiceTest {
         assertThat(checkingAccount.getBalance()).isEqualTo(balance);
         assertThat(checkingAccount.getId()).isNull();
         assertThat(checkingAccount.getOwnerName()).isEqualTo(OWNER_NAME);
-        verifyLogOperation(OperationType.DEPOSIT, BigDecimal.valueOf(1000), BigDecimal.valueOf(1000));
+        verifyLogOperation(BigDecimal.valueOf(1000), BigDecimal.valueOf(1000));
     }
 
     @Test
-    void depositMoney_shouldSucceed() {
+    void findById_shouldThrowException_whenAccountIsNotFound() {
         // Given
-        BigDecimal amount = BigDecimal.valueOf(500);
-        Account mockAccount = buildAccount(BigDecimal.valueOf(1000));
-        when(accountRepository.findById(DEFAULT_ID)).thenReturn(Optional.of(mockAccount));
-        when(transactionProcessingService.addAmount(any(), any())).thenReturn(BigDecimal.valueOf(1500));
-
-        // When
-        accountService.depositMoney(DEFAULT_ID, amount);
-
-        // Then
-        assertThat(mockAccount.getBalance()).isEqualTo(BigDecimal.valueOf(1500));
-        ArgumentCaptor<Account> accountArgumentCaptor = ArgumentCaptor.forClass(Account.class);
-        verify(accountRepository, times(1)).save(accountArgumentCaptor.capture());
-        Account account = accountArgumentCaptor.getValue();
-        assertThat(account.getBalance()).isEqualTo(BigDecimal.valueOf(1500));
-        verify(transactionProcessingService).addAmount(any(), any());
-        verifyLogOperation(OperationType.DEPOSIT, BigDecimal.valueOf(1500), BigDecimal.valueOf(500));
-    }
-
-    @Test
-    void depositMoney_shouldThrowException_whenAccountIsNotFound() {
-        // Given
-        BigDecimal amount = BigDecimal.valueOf(500);
         when(accountRepository.findById(DEFAULT_ID)).thenReturn(Optional.empty());
 
         // When & Then
-        assertThatThrownBy(() -> accountService.depositMoney(DEFAULT_ID, amount))
+        assertThatThrownBy(() -> accountService.findById(DEFAULT_ID))
                 .isInstanceOf(ResourceNotFoundException.class)
                 .hasMessage("Account with ID 1 not found.");
-        verify(accountRepository, never()).save(any(Account.class));
-        verify(auditService, never()).logOperation(anyLong(), any(), any(), any());
+        verify(accountRepository).findById(any());
     }
 
     @Test
-    void withdrawMoney_shouldSucceed_whenAccountTypeIsChecking() {
+    void findById_shouldReturnAccount() {
         // Given
-        long accountId = 1L;
-        BigDecimal amount = BigDecimal.valueOf(200);
         Account mockAccount = buildAccount(BigDecimal.valueOf(1000));
-        when(accountRepository.findById(accountId)).thenReturn(Optional.of(mockAccount));
-        when(transactionProcessingService.subtractAmount(any(), any())).thenReturn(BigDecimal.valueOf(800));
+        when(accountRepository.findById(DEFAULT_ID)).thenReturn(Optional.of(mockAccount));
 
-        // Act
-        accountService.withdrawMoney(accountId, amount);
+        // When
+        Account result = accountService.findById(DEFAULT_ID);
 
-        // Assert
-        assertThat(mockAccount.getBalance()).isEqualTo(BigDecimal.valueOf(800));
-        verify(accountRepository, times(1)).save(mockAccount);
-        verifyLogOperation(OperationType.WITHDRAWAL, BigDecimal.valueOf(800), BigDecimal.valueOf(200));
+        // Then
+        assertThat(result).isEqualTo(mockAccount);
+        verify(accountRepository).findById(any());
     }
 
-    private void verifyLogOperation(OperationType operationType, BigDecimal balance, BigDecimal amount) {
+    @Test
+    void save_shouldSucceed() {
+        // Given
+        Account account = buildAccount(BigDecimal.valueOf(1000));
+        Account mockAccount = buildAccount(BigDecimal.valueOf(1000));
+        when(accountRepository.save(any())).thenReturn(mockAccount);
+
+        // When
+        Account result = accountService.save(account);
+
+        // Then
+        assertThat(result).isEqualTo(mockAccount);
+        verify(accountRepository).save(any());
+    }
+
+    private void verifyLogOperation(BigDecimal balance, BigDecimal amount) {
         ArgumentCaptor<OperationType> operationTypeArgumentCaptor = ArgumentCaptor.forClass(OperationType.class);
         ArgumentCaptor<Long> acountIdArgumentCaptor = ArgumentCaptor.forClass(Long.class);
         ArgumentCaptor<BigDecimal> amountArgumentCaptor = ArgumentCaptor.forClass(BigDecimal.class);
@@ -129,7 +114,7 @@ class AccountServiceTest {
                 operationTypeArgumentCaptor.capture(),
                 balanceArgumentCaptor.capture(),
                 amountArgumentCaptor.capture());
-        assertThat(operationTypeArgumentCaptor.getValue()).isEqualTo(operationType);
+        assertThat(operationTypeArgumentCaptor.getValue()).isEqualTo(OperationType.DEPOSIT);
         assertThat(acountIdArgumentCaptor.getValue()).isEqualTo(DEFAULT_ID);
         assertThat(amountArgumentCaptor.getValue()).isEqualByComparingTo(amount);
         assertThat(balanceArgumentCaptor.getValue()).isEqualByComparingTo(balance);

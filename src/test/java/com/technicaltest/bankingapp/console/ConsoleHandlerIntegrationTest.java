@@ -1,5 +1,7 @@
 package com.technicaltest.bankingapp.console;
 
+import com.technicaltest.bankingapp.database.InMemoryDatabase;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
@@ -10,6 +12,12 @@ import java.io.PrintStream;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class ConsoleHandlerIntegrationTest {
+
+    @BeforeEach
+    void setUp() {
+        InMemoryDatabase.idCounter.clear();
+        InMemoryDatabase.database.clear();
+    }
 
     @Test
     void start_shouldNotAcceptCommand_whenItIsNotANumber() {
@@ -130,7 +138,7 @@ class ConsoleHandlerIntegrationTest {
                 .contains("Enter account ID:")
                 .contains("Enter amount to deposit:")
                 .contains("500 deposited successfully")
-                .contains("Account balance: 1500")
+                .contains("Account balance: 1500.00")
                 .contains("Goodbye!");
     }
 
@@ -167,7 +175,7 @@ class ConsoleHandlerIntegrationTest {
                 .contains("Enter account ID:")
                 .contains("Enter amount to withdraw:")
                 .contains("500 withdrawn successfully")
-                .contains("Account balance: 500")
+                .contains("Account balance: 500.00")
                 .contains("Goodbye!");
     }
 

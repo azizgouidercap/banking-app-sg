@@ -15,19 +15,16 @@ import static com.technicaltest.bankingapp.utils.BigDecimalUtils.normalize;
 public class AccountService {
 
     private final AccountRepository accountRepository;
-    private final TransactionProcessingService transactionProcessingService;
     private final AuditService auditService;
 
     public AccountService() {
         this.accountRepository = new AccountRepository();
-        this.transactionProcessingService = new TransactionProcessingService();
         this.auditService = new AuditService();
     }
 
     // Used for unit test injections
-    public AccountService(AccountRepository accountRepository, TransactionProcessingService transactionProcessingService, AuditService auditService) {
+    public AccountService(AccountRepository accountRepository, AuditService auditService) {
         this.accountRepository = accountRepository;
-        this.transactionProcessingService = transactionProcessingService;
         this.auditService = auditService;
     }
 
@@ -44,32 +41,11 @@ public class AccountService {
         return AccountMapper.toDTO(createdAccount);
     }
 
-    public void depositMoney(long accountId, BigDecimal amount) {
-        log.debug("AccountService - Initiating deposit.");
-        Account account = findById(accountId);
-        account.setBalance(transactionProcessingService.addAmount(account.getBalance(), amount));
-
-        auditService.logOperation(account.getId(), OperationType.DEPOSIT, account.getBalance(), amount);
-        accountRepository.save(account);
-        log.debug("AccountService - Account deposit successfully.");
+    public Account save(Account account) {
+        return accountRepository.save(account);
     }
 
-    public void withdrawMoney(long accountId, BigDecimal amount) {
-        log.debug("AccountService - Initiating withdraw.");
-        Account account = findById(accountId);
-
-        account.setBalance(transactionProcessingService.subtractAmount(account.getBalance(), amount));
-
-        auditService.logOperation(account.getId(), OperationType.WITHDRAWAL, account.getBalance(), amount);
-        accountRepository.save(account);
-        log.debug("AccountService - Account withdraw successfully.");
-    }
-
-    public BigDecimal getBalance(long accountId) {
-        return findById(accountId).getBalance();
-    }
-
-    private Account findById(Long accountId) {
+    public Account findById(Long accountId) {
         return accountRepository.findById(accountId)
                 .orElseThrow(() -> new ResourceNotFoundException("Account", accountId));
     }

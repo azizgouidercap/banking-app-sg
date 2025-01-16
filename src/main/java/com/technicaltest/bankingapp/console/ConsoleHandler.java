@@ -5,6 +5,7 @@ import com.technicaltest.bankingapp.dto.OperationDTO;
 import com.technicaltest.bankingapp.exception.BusinessException;
 import com.technicaltest.bankingapp.service.AccountService;
 import com.technicaltest.bankingapp.service.OperationService;
+import com.technicaltest.bankingapp.service.TransactionService;
 import lombok.extern.slf4j.Slf4j;
 
 import java.math.BigDecimal;
@@ -18,6 +19,7 @@ import static com.technicaltest.bankingapp.utils.ValidationUtils.requirePositive
 public class ConsoleHandler {
 
     private final AccountService accountService = new AccountService();
+    private final TransactionService transactionService = new TransactionService();
     private final OperationService operationService = new OperationService();
     private final Scanner scanner = new Scanner(System.in);
 
@@ -129,7 +131,7 @@ public class ConsoleHandler {
         var amount = scanner.nextBigDecimal();
         requirePositiveNumber(amount, "Amount to Withdraw");
 
-        accountService.depositMoney(accountId, amount);
+        transactionService.depositMoney(accountId, amount);
         System.out.println(amount + " deposited successfully.");
     }
 
@@ -143,7 +145,7 @@ public class ConsoleHandler {
         System.out.print("Enter amount to withdraw: ");
         var amount = scanner.nextBigDecimal();
 
-        accountService.withdrawMoney(accountId, amount);
+        transactionService.withdrawMoney(accountId, amount);
         System.out.println(amount + " withdrawn successfully.");
     }
 
@@ -156,7 +158,7 @@ public class ConsoleHandler {
         long accountId = scanner.nextLong();
         requirePositiveNumber(accountId, "Account ID");
 
-        BigDecimal accountBalance = accountService.getBalance(accountId);
+        BigDecimal accountBalance = transactionService.getBalance(accountId);
         System.out.println("Account balance: " + accountBalance);
     }
 
